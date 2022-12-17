@@ -27,6 +27,15 @@
     - name: Public IP of VM
       debug:
         msg: "The public IP is {{ output_ip_address.state.ip_address }}."
+    - name: Create public IP address 2
+      azure_rm_publicipaddress:
+        resource_group: ansible_managed_resources
+        allocation_method: Static
+        name: myPublicIP2
+      register: output_ip_address2
+    - name: Public IP of VM 2
+      debug:
+        msg: "The public IP 2 is {{ output_ip_address2.state.ip_address }}."
     - name: Create Network Security Group that allows SSH
       azure_rm_securitygroup:
         resource_group: ansible_managed_resources
@@ -45,6 +54,14 @@
         virtual_network: myVnet
         subnet: mySubnet
         public_ip_name: myPublicIP
+        security_group: myNetworkSecurityGroup
+    - name: Create virtual network interface card 2
+      azure_rm_networkinterface:
+        resource_group: ansible_managed_resources
+        name: myNIC2
+        virtual_network: myVnet
+        subnet: mySubnet
+        public_ip_name: myPublicIP2
         security_group: myNetworkSecurityGroup
     - name: Create VM
       azure_rm_virtualmachine:
@@ -72,7 +89,7 @@
         ssh_public_keys:
           - path: /home/azureuser/.ssh/authorized_keys
             key_data: "{{ lookup('ansible.builtin.env', 'SSH_PUBLIC_KEY') }}"
-        network_interfaces: myNIC
+        network_interfaces: myNIC2
         image:
           offer: CentOS
           publisher: OpenLogic
