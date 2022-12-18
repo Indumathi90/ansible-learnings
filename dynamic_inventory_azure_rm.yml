@@ -2,4 +2,4 @@ plugin: azure_rm
 include_vm_resource_groups:
   - ansible_managed_resources
 auth_source: auto
-ansible_user: azureuser
+ansible_ssh_user: azureuser
