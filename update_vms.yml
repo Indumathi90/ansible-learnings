@@ -1,0 +1,14 @@
+- hosts: localhost
+  become: true
+  gather_facts: true
+
+  tasks:
+  - name: Copy file 1 to target group nodes
+    copy:
+      src: file_to_copy_1.txt
+      dest: "/tmp/"
+    register: result
+
+  - name: Show result
+    debug:
+      var: result
